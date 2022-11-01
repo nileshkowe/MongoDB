@@ -1,0 +1,258 @@
+Microsoft Windows [Version 10.0.22000.1165]
+(c) Microsoft Corporation. All rights reserved.
+
+C:\Users\Nilesh>mongosh
+Current Mongosh Log ID: 6360dcae38a52cec3953165a
+Connecting to:          mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+1.6.0
+Using MongoDB:          6.0.2
+Using Mongosh:          1.6.0
+
+For mongosh info see: https://docs.mongodb.com/mongodb-shell/
+
+------
+   The server generated these startup warnings when booting
+   2022-11-01T13:55:01.527+05:30: Access control is not enabled for the database. Read and write access to data and configuration is unrestricted
+------
+
+------
+   Enable MongoDB's free cloud-based monitoring service, which will then receive and display
+   metrics about your deployment (disk utilization, CPU, operation statistics, etc).
+
+   The monitoring data will be available on a MongoDB website with a unique URL accessible to you
+   and anyone you share the URL with. MongoDB may use this information to make product
+   improvements and to suggest MongoDB products and deployment options to you.
+
+   To enable free monitoring, run the following command: db.enableFreeMonitoring()
+   To permanently disable this reminder, run the following command: db.disableFreeMonitoring()
+------
+
+test> use college
+switched to db college
+college> show collections
+students
+college> db.student.insertOne({"id":"1","name":"aadi","language":"c++"})
+{
+  acknowledged: true,
+  insertedId: ObjectId("6360dd9257aa69cc11993628")
+}
+college> db.students.find().pretty()
+
+college> db.student.find().pretty()
+[
+  {
+    _id: ObjectId("6360dd9257aa69cc11993628"),
+    id: '1',
+    name: 'aadi',
+    language: 'c++'
+  }
+]
+college> db.student.insertOne({"id":"2","name":"isha","language":"python"})
+{
+  acknowledged: true,
+  insertedId: ObjectId("6360de0857aa69cc11993629")
+}
+college> db.student.insertOne({"id":"3","name":"brax","language":"java"})
+{
+  acknowledged: true,
+  insertedId: ObjectId("6360de2757aa69cc1199362a")
+}
+college> db.student.insertOne({"id":"4","name":"kalp","language":"kotlin"})
+{
+  acknowledged: true,
+  insertedId: ObjectId("6360de5057aa69cc1199362b")
+}
+college> db.student.find().pretty()
+[
+  {
+    _id: ObjectId("6360dd9257aa69cc11993628"),
+    id: '1',
+    name: 'aadi',
+    language: 'c++'
+  },
+  {
+    _id: ObjectId("6360de0857aa69cc11993629"),
+    id: '2',
+    name: 'isha',
+    language: 'python'
+  },
+  {
+    _id: ObjectId("6360de2757aa69cc1199362a"),
+    id: '3',
+    name: 'brax',
+    language: 'java'
+  },
+  {
+    _id: ObjectId("6360de5057aa69cc1199362b"),
+    id: '4',
+    name: 'kalp',
+    language: 'kotlin'
+  }
+]
+college> db.student.createIndex({name:1})
+name_1
+college> db.student.createIndex({language:-1})
+language_-1
+college> db.student.createIndex({name:1,language:-1})
+name_1_language_-1
+college> db.student.dropIndex({language:-1})
+{ nIndexesWas: 4, ok: 1 }
+college> db.student.update({"name":"isha"{$set:{"name":"ruci"}}});
+Uncaught:
+SyntaxError: Unexpected token, expected "," (1:32)
+
+> 1 | db.student.update({"name":"isha"{$set:{"name":"ruci"}}});
+    |                                 ^
+  2 |
+
+college> db.student.update({"name":"isha"},{$set:{"name":"ruci"}}});
+Uncaught:
+SyntaxError: Unexpected token, expected "," (1:56)
+
+> 1 | db.student.update({"name":"isha"},{$set:{"name":"ruci"}}});
+    |                                                         ^
+  2 |
+
+college> db.student.update({"name":"isha"},{$set:{"name":"ruci"}});
+DeprecationWarning: Collection.update() is deprecated. Use updateOne, updateMany, or bulkWrite.
+{
+  acknowledged: true,
+  insertedId: null,
+  matchedCount: 1,
+  modifiedCount: 1,
+  upsertedCount: 0
+}
+college> db.student.find().pretty()
+[
+  {
+    _id: ObjectId("6360dd9257aa69cc11993628"),
+    id: '1',
+    name: 'aadi',
+    language: 'c++'
+  },
+  {
+    _id: ObjectId("6360de0857aa69cc11993629"),
+    id: '2',
+    name: 'ruci',
+    language: 'python'
+  },
+  {
+    _id: ObjectId("6360de2757aa69cc1199362a"),
+    id: '3',
+    name: 'brax',
+    language: 'java'
+  },
+  {
+    _id: ObjectId("6360de5057aa69cc1199362b"),
+    id: '4',
+    name: 'kalp',
+    language: 'kotlin'
+  }
+]
+college> db.student.find().sort({name:1})
+[
+  {
+    _id: ObjectId("6360dd9257aa69cc11993628"),
+    id: '1',
+    name: 'aadi',
+    language: 'c++'
+  },
+  {
+    _id: ObjectId("6360de2757aa69cc1199362a"),
+    id: '3',
+    name: 'brax',
+    language: 'java'
+  },
+  {
+    _id: ObjectId("6360de5057aa69cc1199362b"),
+    id: '4',
+    name: 'kalp',
+    language: 'kotlin'
+  },
+  {
+    _id: ObjectId("6360de0857aa69cc11993629"),
+    id: '2',
+    name: 'ruci',
+    language: 'python'
+  }
+]
+college> db.student.find().sort({name:-1})
+[
+  {
+    _id: ObjectId("6360de0857aa69cc11993629"),
+    id: '2',
+    name: 'ruci',
+    language: 'python'
+  },
+  {
+    _id: ObjectId("6360de5057aa69cc1199362b"),
+    id: '4',
+    name: 'kalp',
+    language: 'kotlin'
+  },
+  {
+    _id: ObjectId("6360de2757aa69cc1199362a"),
+    id: '3',
+    name: 'brax',
+    language: 'java'
+  },
+  {
+    _id: ObjectId("6360dd9257aa69cc11993628"),
+    id: '1',
+    name: 'aadi',
+    language: 'c++'
+  }
+]
+college> db.student.find().sort({language:1})
+[
+  {
+    _id: ObjectId("6360dd9257aa69cc11993628"),
+    id: '1',
+    name: 'aadi',
+    language: 'c++'
+  },
+  {
+    _id: ObjectId("6360de2757aa69cc1199362a"),
+    id: '3',
+    name: 'brax',
+    language: 'java'
+  },
+  {
+    _id: ObjectId("6360de5057aa69cc1199362b"),
+    id: '4',
+    name: 'kalp',
+    language: 'kotlin'
+  },
+  {
+    _id: ObjectId("6360de0857aa69cc11993629"),
+    id: '2',
+    name: 'ruci',
+    language: 'python'
+  }
+]
+college> db.student.find().sort({language:-1})
+[
+  {
+    _id: ObjectId("6360de0857aa69cc11993629"),
+    id: '2',
+    name: 'ruci',
+    language: 'python'
+  },
+  {
+    _id: ObjectId("6360de5057aa69cc1199362b"),
+    id: '4',
+    name: 'kalp',
+    language: 'kotlin'
+  },
+  {
+    _id: ObjectId("6360de2757aa69cc1199362a"),
+    id: '3',
+    name: 'brax',
+    language: 'java'
+  },
+  {
+    _id: ObjectId("6360dd9257aa69cc11993628"),
+    id: '1',
+    name: 'aadi',
+    language: 'c++'
+  }
+]
